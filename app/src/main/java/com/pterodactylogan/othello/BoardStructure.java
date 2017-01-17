@@ -5,6 +5,7 @@ package com.pterodactylogan.othello;
  */
 
 public class BoardStructure {
+
     public int BoardSize = 8;
 
     OthelloCell [][] board = new OthelloCell[BoardSize][BoardSize];
