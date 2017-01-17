@@ -5,4 +5,5 @@ package com.pterodactylogan.othello;
  */
 
 public class BoardStructure {
+
 }
