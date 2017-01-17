@@ -50,7 +50,7 @@ public class BoardStructure {
                 }
                 //if that tile is white, flip everything btwn it and the original white tile
                 if(isWhite(r-i, c)){
-                    for(i; i>0; i--){
+                    for(int j=i; j>0; j--){
                         board[r][c]=OthelloCell.WHITE;
                     }
                 }
@@ -65,7 +65,7 @@ public class BoardStructure {
                 }
                 //if that tile is white, flip everything btwn it and the original white tile
                 if(isWhite(r-i, c+i)){
-                    for(i; i>0; i--){
+                    for(int j=i; j>0; j--){
                         board[r][c]=OthelloCell.WHITE;
                     }
                 }
@@ -80,7 +80,7 @@ public class BoardStructure {
                 }
                 //if that tile is white, flip everything btwn it and the original white tile
                 if(isWhite(r, c+i)){
-                    for(i; i>0; i--){
+                    for(int j=i; j>0; j--){
                         board[r][c]=OthelloCell.WHITE;
                     }
                 }
@@ -95,7 +95,37 @@ public class BoardStructure {
                 }
                 //if that tile is white, flip everything btwn it and the original white tile
                 if(isWhite(r+i, c+i)){
-                    for(i; i>0; i--){
+                    for(int j=i; j>0; j--){
+                        board[r][c]=OthelloCell.WHITE;
+                    }
+                }
+            }
+
+            //below
+            if(r<7){
+                int i=0;
+                //go until you reach a tile that is not black
+                while(isBlack(r+i, c)){
+                    i++;
+                }
+                //if that tile is white, flip everything btwn it and the original white tile
+                if(isWhite(r+i, c)){
+                    for(int j=i; j>0; j--){
+                        board[r][c]=OthelloCell.WHITE;
+                    }
+                }
+            }
+
+            //lower left
+            if(r<7 && c>=1){
+                int i=0;
+                //go until you reach a tile that is not black
+                while(isBlack(r+i, c-i)){
+                    i++;
+                }
+                //if that tile is white, flip everything btwn it and the original white tile
+                if(isWhite(r+i, c-i)){
+                    for(int j=i; j>0; j--){
                         board[r][c]=OthelloCell.WHITE;
                     }
                 }
