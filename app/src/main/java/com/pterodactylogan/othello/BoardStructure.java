@@ -1,5 +1,7 @@
 package com.pterodactylogan.othello;
 
+import java.util.ArrayList;
+
 /**
  * Created by demouser on 1/17/17.
  */
@@ -16,22 +18,50 @@ public class BoardStructure {
         WHITE
     }
 
+    //white=true, black=false
+    public int[] getGoodMove(boolean color){
+        int[] move = {-1,-1};
+        int maxFlips = 0;
+        //loop through each square in the grid
+        for(int i=0; i<BoardSize; i++){
+            for(int j =0; j<BoardSize; j++){
+                if(!isEmpty(i,j)){
+                    ArrayList<int[]> flips = getFlips(color, i, j);
+                    if(flips.size()>maxFlips){
+                        maxFlips = flips.size();
+                        move[0]=i;
+                        move[1]=j;
+                    }
+                }
+            }
+        }
+        if(maxFlips==0) return null;
+        return move;
+    }
+
+
+
     public BoardStructure(int size){
-        for (int r = 0 ; r < BoardSize ; r++){
-            for (int c = 0; c < BoardSize ; c++){
+        for (int r = 0 ; r < size ; r++){
+            for (int c = 0; c < size ; c++){
                 board[r][c] = OthelloCell.EMPTY;
             }
         }
-        int a = BoardSize/2 -1;
-        int b = BoardSize/2;
+        int a = size/2 -1;
+        int b = size/2;
         board[a][a] = OthelloCell.WHITE;
         board[a][b] = OthelloCell.BLACK;
         board[b][a] = OthelloCell.BLACK;
         board[b][b] = OthelloCell.WHITE;
     }
 
-    //if tile is already filled, funciton does nothing
-    //otherwise places tile--if player is true white, if false black
+    /**
+     *if tile is already filled, funciton does nothing
+     * otherwise places tile--if player is true white, if false black
+     * @param color
+     * @param r
+     * @param c
+     */
     public void placeTile(boolean color, int r, int c){
         if(board[r][c]!= OthelloCell.EMPTY) return;
         if(color) board[r][c] = OthelloCell.WHITE;
@@ -39,21 +69,22 @@ public class BoardStructure {
         flipTiles(color,r,c);
     }
 
-    //true=white, false= black
-    public void flipTiles(boolean color, int r, int c){
+    public ArrayList<int[]> getFlips(boolean color, int r, int c){
+        ArrayList<int[]> tiles = new ArrayList();
         //placed tile was white
         if(color){
             //above tile, make sure not on edge
             if(r>=1){
                 int i=0;
                 //go up until you reach a tile that is not black
-                while(isBlack(r-i, c)){
+                while(isBlack(r-i-1, c)){
                     i++;
                 }
                 //if that tile is white, flip everything btwn it and the original white tile
-                if(isWhite(r-i, c)){
+                if(isWhite(r-i-1, c)){
                     for(int j=i; j>0; j--){
-                        board[r][c]=OthelloCell.WHITE;
+                        int[] point = {r-i, c};
+                        tiles.add(point);
                     }
                 }
             }
@@ -61,14 +92,13 @@ public class BoardStructure {
             //upper right tile
             if(r>=1 && c<7){
                 int i=0;
-                //go until you reach a tile that is not black
-                while(isBlack(r-i, c+i)){
+                while(isBlack(r-i-1, c+i+1)){
                     i++;
                 }
-                //if that tile is white, flip everything btwn it and the original white tile
-                if(isWhite(r-i, c+i)){
+                if(isWhite(r-i-1, c+i+1)){
                     for(int j=i; j>0; j--){
-                        board[r][c]=OthelloCell.WHITE;
+                        int[] point = {r-i, c+i};
+                        tiles.add(point);
                     }
                 }
             }
@@ -76,14 +106,13 @@ public class BoardStructure {
             //right side
             if(c<7){
                 int i=0;
-                //go until you reach a tile that is not black
-                while(isBlack(r, c+i)){
+                while(isBlack(r, c+i+1)){
                     i++;
                 }
-                //if that tile is white, flip everything btwn it and the original white tile
-                if(isWhite(r, c+i)){
+                if(isWhite(r, c+i+1)){
                     for(int j=i; j>0; j--){
-                        board[r][c]=OthelloCell.WHITE;
+                        int[] point = {r, c+i};
+                        tiles.add(point);
                     }
                 }
             }
@@ -91,14 +120,13 @@ public class BoardStructure {
             //lower right corner
             if(r<7 && c<7){
                 int i=0;
-                //go until you reach a tile that is not black
-                while(isBlack(r+i, c+i)){
+                while(isBlack(r+i+1, c+i+1)){
                     i++;
                 }
-                //if that tile is white, flip everything btwn it and the original white tile
-                if(isWhite(r+i, c+i)){
+                if(isWhite(r+i+1, c+i+1)){
                     for(int j=i; j>0; j--){
-                        board[r][c]=OthelloCell.WHITE;
+                        int[] point = {r+i, c+i};
+                        tiles.add(point);
                     }
                 }
             }
@@ -106,14 +134,13 @@ public class BoardStructure {
             //below
             if(r<7){
                 int i=0;
-                //go until you reach a tile that is not black
-                while(isBlack(r+i, c)){
+                while(isBlack(r+i+1, c)){
                     i++;
                 }
-                //if that tile is white, flip everything btwn it and the original white tile
-                if(isWhite(r+i, c)){
+                if(isWhite(r+i+1, c)){
                     for(int j=i; j>0; j--){
-                        board[r][c]=OthelloCell.WHITE;
+                        int[] point = {r+i, c};
+                        tiles.add(point);
                     }
                 }
             }
@@ -121,14 +148,13 @@ public class BoardStructure {
             //lower left
             if(r<7 && c>=1){
                 int i=0;
-                //go until you reach a tile that is not black
-                while(isBlack(r+i, c-i)){
+                while(isBlack(r+i+1, c-i-1)){
                     i++;
                 }
-                //if that tile is white, flip everything btwn it and the original white tile
-                if(isWhite(r+i, c-i)){
+                if(isWhite(r+i+1, c-i-1)){
                     for(int j=i; j>0; j--){
-                        board[r][c]=OthelloCell.WHITE;
+                        int[] point = {r+i, c-i};
+                        tiles.add(point);
                     }
                 }
             }
@@ -136,14 +162,13 @@ public class BoardStructure {
             //left side
             if(c>=1){
                 int i=0;
-                //go until you reach a tile that is not black
-                while(isBlack(r, c-i)){
+                while(isBlack(r, c-i-1)){
                     i++;
                 }
-                //if that tile is white, flip everything btwn it and the original white tile
-                if(isWhite(r, c-i)){
+                if(isWhite(r, c-i-1)){
                     for(int j=i; j>0; j--){
-                        board[r][c]=OthelloCell.WHITE;
+                        int[] point = {r, c-i};
+                        tiles.add(point);
                     }
                 }
             }
@@ -151,32 +176,29 @@ public class BoardStructure {
             //upper left
             if(r>=1 && c>=1){
                 int i=0;
-                //go until you reach a tile that is not black
-                while(isBlack(r-i, c-i)){
+                while(isBlack(r-i-1, c-i-1)){
                     i++;
                 }
-                //if that tile is white, flip everything btwn it and the original white tile
-                if(isWhite(r-i, c-i)){
+                if(isWhite(r-i-1, c-i-1)){
                     for(int j=i; j>0; j--){
-                        board[r][c]=OthelloCell.WHITE;
+                        int[] point = {r-i, c-i};
+                        tiles.add(point);
                     }
                 }
             }
 
         }
+        //tile being placed is black
         else{
-
-            //above tile, make sure not on edge
             if(r>=1){
                 int i=0;
-                //go up until you reach a tile that is not black
-                while(isWhite(r-i, c)){
+                while(isWhite(r-i-1, c)){
                     i++;
                 }
-                //if that tile is white, flip everything btwn it and the original white tile
-                if(isBlack(r-i, c)){
+                if(isBlack(r-i-1, c)){
                     for(int j=i; j>0; j--){
-                        board[r][c]=OthelloCell.WHITE;
+                        int[] point = {r-i, c};
+                        tiles.add(point);
                     }
                 }
             }
@@ -184,14 +206,13 @@ public class BoardStructure {
             //upper right tile
             if(r>=1 && c<7){
                 int i=0;
-                //go until you reach a tile that is not black
-                while(isWhite(r-i, c+i)){
+                while(isWhite(r-i-1, c+i+1)){
                     i++;
                 }
-                //if that tile is white, flip everything btwn it and the original white tile
-                if(isBlack(r-i, c+i)){
+                if(isBlack(r-i-1, c+i+1)){
                     for(int j=i; j>0; j--){
-                        board[r][c]=OthelloCell.WHITE;
+                        int[] point = {r-i, c+1};
+                        tiles.add(point);
                     }
                 }
             }
@@ -199,14 +220,13 @@ public class BoardStructure {
             //right side
             if(c<7){
                 int i=0;
-                //go until you reach a tile that is not black
-                while(isWhite(r, c+i)){
+                while(isWhite(r, c+i+1)){
                     i++;
                 }
-                //if that tile is white, flip everything btwn it and the original white tile
-                if(isBlack(r, c+i)){
+                if(isBlack(r, c+i+1)){
                     for(int j=i; j>0; j--){
-                        board[r][c]=OthelloCell.WHITE;
+                        int[] point = {r, c+i};
+                        tiles.add(point);
                     }
                 }
             }
@@ -214,14 +234,13 @@ public class BoardStructure {
             //lower right corner
             if(r<7 && c<7){
                 int i=0;
-                //go until you reach a tile that is not black
-                while(isWhite(r+i, c+i)){
+                while(isWhite(r+i+1, c+i+1)){
                     i++;
                 }
-                //if that tile is white, flip everything btwn it and the original white tile
-                if(isBlack(r+i, c+i)){
+                if(isBlack(r+i+1, c+i+1)){
                     for(int j=i; j>0; j--){
-                        board[r][c]=OthelloCell.WHITE;
+                        int[] point = {r+i, c+i};
+                        tiles.add(point);
                     }
                 }
             }
@@ -229,14 +248,13 @@ public class BoardStructure {
             //below
             if(r<7){
                 int i=0;
-                //go until you reach a tile that is not black
-                while(isWhite(r+i, c)){
+                while(isWhite(r+i+1, c)){
                     i++;
                 }
-                //if that tile is white, flip everything btwn it and the original white tile
-                if(isBlack(r+i, c)){
+                if(isBlack(r+i+1, c)){
                     for(int j=i; j>0; j--){
-                        board[r][c]=OthelloCell.WHITE;
+                        int[] point = {r+i, c};
+                        tiles.add(point);
                     }
                 }
             }
@@ -244,14 +262,13 @@ public class BoardStructure {
             //lower left
             if(r<7 && c>=1){
                 int i=0;
-                //go until you reach a tile that is not black
-                while(isWhite(r+i, c-i)){
+                while(isWhite(r+i+1, c-i-1)){
                     i++;
                 }
-                //if that tile is white, flip everything btwn it and the original white tile
-                if(isBlack(r+i, c-i)){
+                if(isBlack(r+i+1, c-i-1)){
                     for(int j=i; j>0; j--){
-                        board[r][c]=OthelloCell.WHITE;
+                        int[] point = {r+i, c-i};
+                        tiles.add(point);
                     }
                 }
             }
@@ -259,14 +276,13 @@ public class BoardStructure {
             //left side
             if(c>=1){
                 int i=0;
-                //go until you reach a tile that is not black
-                while(isWhite(r, c-i)){
+                while(isWhite(r, c-i-1)){
                     i++;
                 }
-                //if that tile is white, flip everything btwn it and the original white tile
-                if(isBlack(r, c-i)){
+                if(isBlack(r, c-i-1)){
                     for(int j=i; j>0; j--){
-                        board[r][c]=OthelloCell.WHITE;
+                        int[] point = {r, c-i};
+                        tiles.add(point);
                     }
                 }
             }
@@ -274,25 +290,58 @@ public class BoardStructure {
             //upper left
             if(r>=1 && c>=1){
                 int i=0;
-                //go until you reach a tile that is not black
-                while(isWhite(r-i, c-i)){
+                while(isWhite(r-i-1, c-i-1)){
                     i++;
                 }
-                //if that tile is white, flip everything btwn it and the original white tile
-                if(isBlack(r-i, c-i)){
+                if(isBlack(r-i-1, c-i-1)){
                     for(int j=i; j>0; j--){
-                        board[r][c]=OthelloCell.WHITE;
+                        int[] point = {r-i, c-i};
+                        tiles.add(point);
                     }
                 }
             }
+        }
+        return tiles;
+
+    }
+
+    /**
+     * Flips tiles according to the tile that was just placed
+     * true= white, false=black tile being placed
+     * @param color
+     * @param r
+     * @param c
+     *
+     */
+    public void flipTiles(boolean color, int r, int c){
+        ArrayList<int[]> tiles = getFlips(color, r, c);
+        for(int i=0; i<tiles.size(); i++){
+            int[] coords = tiles.get(i);
+            if(color) board[coords[0]][coords[1]] = OthelloCell.WHITE;
+            else board[coords[0]][coords[1]] = OthelloCell.BLACK;
         }
     }
 
-    public String toString(){ //ROW, COL
+    public String nicerToString(){
         String boardString="";
+        for(int n=0;n<BoardSize;n++){
+            boardString+=" "+n;
+        }
+        boardString+="\n";
         for(int i=0;i<board.length;i++) {
+            boardString+=i;
             for (int j = 0; j < board.length; j++){
-                boardString += board[i][j]+" | ";
+                boardString +="|";
+                if(board[i][j]==OthelloCell.EMPTY){
+                    boardString+=" ";
+                }
+                if(board[i][j]==OthelloCell.BLACK){
+                    boardString+="x";
+                }
+                if(board[i][j]==OthelloCell.WHITE){
+                    boardString+="o";
+                }
+
             }
             boardString+="\n";
         }
@@ -300,16 +349,36 @@ public class BoardStructure {
     }
 
 
+    /**
+     * returns true iff there is a cell at that location, and that cell is empty
+     * r=row, c=column
+     * @param r
+     * @param c
+     * @return
+     */
     public boolean isEmpty(int r, int c) {
         if(r>7 || r<0 || c>7 || c<0) return false;
         return board[r][c] == OthelloCell.EMPTY;
     }
 
+    /**
+     * returns true iff there is a cell at that location which contains a black tile
+     * r=row, c=colomn
+     * @param r
+     * @param c
+     * @return
+     */
     public boolean isBlack (int r, int c) {
         if(r>7 || r<0 || c>7 || c<0) return false;
         return board[r][c] == OthelloCell.BLACK;
     }
 
+    /**
+     * returns true iff there is a cell at that location which contains a white tile
+     * @param r
+     * @param c
+     * @return
+     */
     public boolean isWhite (int r, int c) {
         if(r>7 || r<0 || c>7 || c<0) return false;
         return board[r][c] == OthelloCell.WHITE;
