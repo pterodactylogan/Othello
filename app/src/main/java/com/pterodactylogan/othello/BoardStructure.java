@@ -411,6 +411,13 @@ public class BoardStructure {
         return board[r][c] == OthelloCell.WHITE;
     }
 
-
+//    public boolean isStuck(boolean color){
+//        //check all cells
+//        for(int i=0; i<BoardSize; i++){
+//            for(int j=0; j<BoardSize; j++){
+//                if(board[i][j])
+//            }
+//        }
+//    }
 
 }

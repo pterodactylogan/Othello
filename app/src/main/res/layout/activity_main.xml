@@ -9,32 +9,6 @@
     android:background="#2a2a2a"
     >
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Surrender"
-        android:layout_marginLeft="58dp"
-        android:layout_marginStart="58dp"
-        android:id="@+id/surrender"
-        android:background="#161616"
-        android:layout_below="@+id/board_view"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="32dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="NEW GAME"
-        android:onClick="reset"
-        android:id="@+id/reset"
-        android:layout_marginRight="58dp"
-        android:layout_marginEnd="58dp"
-        android:background="#161616"
-        android:layout_alignBaseline="@+id/surrender"
-        android:layout_alignBottom="@+id/surrender"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
 
     <com.pterodactylogan.othello.BoardView
         android:layout_width="wrap_content"
@@ -58,5 +32,24 @@
         android:fontFamily="serif"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NEW GAME"
+        android:onClick="reset"
+        android:id="@+id/reset"
+        android:background="#161616"
+        android:layout_below="@+id/board_view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/reset"
+        android:paddingTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:text="texty text"
+        android:id="@+id/status"/>
 
 </RelativeLayout>

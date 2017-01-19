@@ -6,10 +6,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
+
 /**
  * Created by demouser on 1/13/17.
  */
@@ -69,6 +72,7 @@ public class BoardView extends View {
 
     public void onDraw(Canvas canvas) {
         int cellSize = getWidth() / 8;
+        mLinePaint.setStrokeWidth(cellSize/50.0f);
         canvas.drawRect(0, 0, getWidth(), getHeight(), mBackgroundPaint);
         for (int i = 1; i < 8; i++) {
             canvas.drawLine(cellSize * i, 0, cellSize * i, getHeight(), mLinePaint);
@@ -82,11 +86,11 @@ public class BoardView extends View {
                 cell = b.eval(r, c);
 
                 if (cell == BoardStructure.OthelloCell.BLACK) {
-                    canvas.drawCircle(c*cellSize + cellSize/2, r*cellSize+cellSize/2, 20, mLinePaint);
+                    canvas.drawCircle(c*cellSize + cellSize/2, r*cellSize+cellSize/2, .35f*cellSize, mLinePaint);
                     //System.out.println("BLACK CELL"+ r+ ", "+ c);
                 } else if (cell == BoardStructure.OthelloCell.WHITE) {
 
-                    canvas.drawCircle(c*cellSize + cellSize/2, r*cellSize+cellSize/2, 20, mWhitePaint);
+                    canvas.drawCircle(c*cellSize + cellSize/2, r*cellSize+cellSize/2, 0.35f*cellSize, mWhitePaint);
                     //System.out.println("WHITE CELL at "+ r+ ", "+ c);
                 }
             }
@@ -120,12 +124,26 @@ public class BoardView extends View {
         }
     }
 
+    private final Handler handler = new Handler();
+
+    final Runnable compTurn = new Runnable() {
+        @Override
+        public void run(){
+            comp=true;
+            int [] move = b.getGoodMove(false);
+            if(move==null){
+                TextView status = (TextView) findViewById(R.id.status);
+                status.setText("computer has no moves; it is your turn");
+            }else {
+                b.placeTile(false, move[0], move[1]);
+            }
+            postInvalidate();
+            comp=false;
+        }
+    };
+
     private void computerTurn(){
-        comp = true;
-        int [] move = b.getGoodMove(false);
-        b.placeTile(false, move[0], move[1]);
-        postInvalidate();
-        comp=false;
+        handler.postDelayed(compTurn, 500);
     }
 
     private void init(){
