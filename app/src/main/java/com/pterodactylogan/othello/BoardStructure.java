@@ -348,6 +348,23 @@ public class BoardStructure {
         return boardString;
     }
 
+    /**
+     * Evaluates the value of a cell.
+     * @param r
+     * @param c
+     * @return
+     */
+    public OthelloCell eval(int r, int c){
+        if (board[r][c] == OthelloCell.EMPTY){
+            return OthelloCell.EMPTY;
+        }
+        else if (board[r][c] == OthelloCell.BLACK){
+            return OthelloCell.BLACK;
+        }
+        else {
+            return OthelloCell.WHITE;
+        }
+    }
 
     /**
      * returns true iff there is a cell at that location, and that cell is empty

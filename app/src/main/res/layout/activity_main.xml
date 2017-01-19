@@ -4,23 +4,58 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.pterodactylogan.othello.MainActivity">
+    android:paddingTop="50dp"
+    tools:context="com.pterodactylogan.othello.MainActivity"
+    android:background="#2a2a2a"
+    >
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Surrender"
+        android:layout_marginLeft="58dp"
+        android:layout_marginStart="58dp"
+        android:id="@+id/surrender"
+        android:background="#161616"
+        android:layout_below="@+id/board_view"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="32dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NEW GAME"
+        android:id="@+id/reset"
+        android:layout_marginRight="58dp"
+        android:layout_marginEnd="58dp"
+        android:background="#161616"
+        android:layout_alignBaseline="@+id/surrender"
+        android:layout_alignBottom="@+id/surrender"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <com.pterodactylogan.othello.BoardView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/board_view"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        />
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
+    /**
+
+    *.
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="hi"
-        android:textSize="30dp"
-        android:layout_below="@id/board_view"/>
+        android:text="Othello"
+        android:textSize="30sp"
+        android:id="@+id/textView"
+        android:fontFamily="serif"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

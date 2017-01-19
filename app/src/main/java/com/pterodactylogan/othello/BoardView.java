@@ -7,26 +7,46 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-
 /**
  * Created by demouser on 1/13/17.
  */
 
 public class BoardView extends View {
 
+    boolean comp = false;
+
     private Paint mBackgroundPaint;
+    BoardStructure b = new BoardStructure(8);
+    private BoardStructure mGame = new BoardStructure(8);
+
+    public interface CellTouchListener {
+        void onCellTouched(int x, int y);
+    }
+    private CellTouchListener mTouchListener;
+
 
     public BoardView(Context context) {
         super(context);
         init();
     }
 
+    /**
+     * Creates a board view
+     * @param context
+     * @param attrs
+     */
     public BoardView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
+
+
     }
+
+    private Paint mLinePaint;
+    private Paint mWhitePaint;
 
     public BoardView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -40,27 +60,98 @@ public class BoardView extends View {
     }
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        if (widthMeasureSpec == 0 || heightMeasureSpec == 0) {
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        }
-        int size = Math.min(widthMeasureSpec, heightMeasureSpec);
-        super.onMeasure(size, size);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        int width = getMeasuredWidth();
+        setMeasuredDimension(width, width);
     }
 
-    public void onDraw(Canvas canvas){
-        canvas.drawRect(0,0, getWidth(), getHeight(), mBackgroundPaint);
 
+    public void onDraw(Canvas canvas) {
+        int cellSize = getWidth() / 8;
+        canvas.drawRect(0, 0, getWidth(), getHeight(), mBackgroundPaint);
+        for (int i = 1; i < 8; i++) {
+            canvas.drawLine(cellSize * i, 0, cellSize * i, getHeight(), mLinePaint);
+            canvas.drawLine(0, cellSize * i, getWidth(), cellSize * i, mLinePaint);
+        }
+
+        BoardStructure.OthelloCell cell;
+        //Log.d("on Draw:", b.nicerToString());
+        for (int r = 0; r < b.BoardSize; r++) {
+            for (int c = 0; c < b.BoardSize; c++) {
+                cell = b.eval(r, c);
+
+                if (cell == BoardStructure.OthelloCell.BLACK) {
+                    canvas.drawCircle(c*cellSize + cellSize/2, r*cellSize+cellSize/2, 20, mLinePaint);
+                    //System.out.println("BLACK CELL"+ r+ ", "+ c);
+                } else if (cell == BoardStructure.OthelloCell.WHITE) {
+
+                    canvas.drawCircle(c*cellSize + cellSize/2, r*cellSize+cellSize/2, 20, mWhitePaint);
+                    //System.out.println("WHITE CELL at "+ r+ ", "+ c);
+                }
+            }
+        }
+    }
+    public void setCellTouchListener(CellTouchListener listener) {
+        mTouchListener = listener;
+    }
+
+
+    public void clearCellTouchListener(CellTouchListener listener) {
+        mTouchListener = null;
+    }
+
+    public void updateGame(BoardStructure game) {
+        mGame = game;
+        postInvalidate();
+    }
+
+    public BoardStructure getGame() {
+        return mGame;
+    }
+
+    private void playerTurn(int x, int y){
+        comp = false;
+        b.placeTile(true, y, x);
+        //Log.d("player move", x+", "+y);
+        postInvalidate();
+        computerTurn();
+    }
+
+    private void computerTurn(){
+        comp = true;
+        int [] move = b.getGoodMove(false);
+        b.placeTile(false, move[0], move[1]);
+        postInvalidate();
+        comp=false;
     }
 
     private void init(){
+        b = new BoardStructure(8);
+        mLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mLinePaint.setColor(Color.parseColor("#161616"));
+        mLinePaint.setStrokeWidth(4);
+
+        mWhitePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mWhitePaint.setColor(Color.parseColor("#ffffff"));
+        mWhitePaint.setStrokeWidth(4);
         mBackgroundPaint = new Paint();
-        mBackgroundPaint.setColor(Color.rgb(0,200,0));
+        mBackgroundPaint.setColor(Color.rgb(19, 96, 3));
         setOnTouchListener(new OnTouchListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                event.getX(); //this is the x coordiate of the touch
-                event.getY(); //this is the y coodrinate of the touch
-                event.getActionMasked(); //tells you whether it was a down/up press
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                Log.d("wow", "touch event!");
+                if (motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
+                    //Log.d("event", "down");
+                    return true;
+                } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP) {
+                    int cellSize = getWidth() / 8;
+                    int x = (int) (motionEvent.getX() / cellSize);
+                    int y = (int) (motionEvent.getY() / cellSize);
+                    Log.d("coords", x +"  "+y);
+                    if(!comp) playerTurn(x,y);
+                    return true;
+                }
                 return false;
             }
         });
