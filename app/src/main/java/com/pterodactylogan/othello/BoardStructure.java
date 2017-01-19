@@ -83,7 +83,7 @@ public class BoardStructure {
                 //if that tile is white, flip everything btwn it and the original white tile
                 if(isWhite(r-i-1, c)){
                     for(int j=i; j>0; j--){
-                        int[] point = {r-i, c};
+                        int[] point = {r-j, c};
                         tiles.add(point);
                     }
                 }
@@ -97,7 +97,7 @@ public class BoardStructure {
                 }
                 if(isWhite(r-i-1, c+i+1)){
                     for(int j=i; j>0; j--){
-                        int[] point = {r-i, c+i};
+                        int[] point = {r-j, c+i};
                         tiles.add(point);
                     }
                 }
@@ -111,7 +111,7 @@ public class BoardStructure {
                 }
                 if(isWhite(r, c+i+1)){
                     for(int j=i; j>0; j--){
-                        int[] point = {r, c+i};
+                        int[] point = {r, c+j};
                         tiles.add(point);
                     }
                 }
@@ -125,7 +125,7 @@ public class BoardStructure {
                 }
                 if(isWhite(r+i+1, c+i+1)){
                     for(int j=i; j>0; j--){
-                        int[] point = {r+i, c+i};
+                        int[] point = {r+j, c+j};
                         tiles.add(point);
                     }
                 }
@@ -139,7 +139,7 @@ public class BoardStructure {
                 }
                 if(isWhite(r+i+1, c)){
                     for(int j=i; j>0; j--){
-                        int[] point = {r+i, c};
+                        int[] point = {r+j, c};
                         tiles.add(point);
                     }
                 }
@@ -153,7 +153,7 @@ public class BoardStructure {
                 }
                 if(isWhite(r+i+1, c-i-1)){
                     for(int j=i; j>0; j--){
-                        int[] point = {r+i, c-i};
+                        int[] point = {r+j, c-j};
                         tiles.add(point);
                     }
                 }
@@ -167,7 +167,7 @@ public class BoardStructure {
                 }
                 if(isWhite(r, c-i-1)){
                     for(int j=i; j>0; j--){
-                        int[] point = {r, c-i};
+                        int[] point = {r, c-j};
                         tiles.add(point);
                     }
                 }
@@ -181,7 +181,7 @@ public class BoardStructure {
                 }
                 if(isWhite(r-i-1, c-i-1)){
                     for(int j=i; j>0; j--){
-                        int[] point = {r-i, c-i};
+                        int[] point = {r-j, c-j};
                         tiles.add(point);
                     }
                 }
@@ -197,7 +197,7 @@ public class BoardStructure {
                 }
                 if(isBlack(r-i-1, c)){
                     for(int j=i; j>0; j--){
-                        int[] point = {r-i, c};
+                        int[] point = {r-j, c};
                         tiles.add(point);
                     }
                 }
@@ -211,7 +211,7 @@ public class BoardStructure {
                 }
                 if(isBlack(r-i-1, c+i+1)){
                     for(int j=i; j>0; j--){
-                        int[] point = {r-i, c+1};
+                        int[] point = {r-j, c+1};
                         tiles.add(point);
                     }
                 }
@@ -225,7 +225,7 @@ public class BoardStructure {
                 }
                 if(isBlack(r, c+i+1)){
                     for(int j=i; j>0; j--){
-                        int[] point = {r, c+i};
+                        int[] point = {r, c+j};
                         tiles.add(point);
                     }
                 }
@@ -239,7 +239,7 @@ public class BoardStructure {
                 }
                 if(isBlack(r+i+1, c+i+1)){
                     for(int j=i; j>0; j--){
-                        int[] point = {r+i, c+i};
+                        int[] point = {r+j, c+j};
                         tiles.add(point);
                     }
                 }
@@ -253,7 +253,7 @@ public class BoardStructure {
                 }
                 if(isBlack(r+i+1, c)){
                     for(int j=i; j>0; j--){
-                        int[] point = {r+i, c};
+                        int[] point = {r+j, c};
                         tiles.add(point);
                     }
                 }
@@ -267,7 +267,7 @@ public class BoardStructure {
                 }
                 if(isBlack(r+i+1, c-i-1)){
                     for(int j=i; j>0; j--){
-                        int[] point = {r+i, c-i};
+                        int[] point = {r+j, c-j};
                         tiles.add(point);
                     }
                 }
@@ -281,7 +281,7 @@ public class BoardStructure {
                 }
                 if(isBlack(r, c-i-1)){
                     for(int j=i; j>0; j--){
-                        int[] point = {r, c-i};
+                        int[] point = {r, c-j};
                         tiles.add(point);
                     }
                 }
@@ -295,7 +295,7 @@ public class BoardStructure {
                 }
                 if(isBlack(r-i-1, c-i-1)){
                     for(int j=i; j>0; j--){
-                        int[] point = {r-i, c-i};
+                        int[] point = {r-j, c-j};
                         tiles.add(point);
                     }
                 }
