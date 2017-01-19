@@ -25,7 +25,7 @@ public class BoardStructure {
         //loop through each square in the grid
         for(int i=0; i<BoardSize; i++){
             for(int j =0; j<BoardSize; j++){
-                if(!isEmpty(i,j)){
+                if(isEmpty(i,j)){
                     ArrayList<int[]> flips = getFlips(color, i, j);
                     if(flips.size()>maxFlips){
                         maxFlips = flips.size();

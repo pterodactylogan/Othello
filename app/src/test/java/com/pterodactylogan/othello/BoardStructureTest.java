@@ -64,9 +64,15 @@ public class BoardStructureTest {
     @Test
     public void testGetGoodMove(){
         BoardStructure myBoard = new BoardStructure(8);
-        int[] move = myBoard.getGoodMove(false); //move for black
-        myBoard.placeTile(false, move[0], move[1]);
-        System.out.println(myBoard.nicerToString());
+        for(int i=0; i<10; i++){
+            boolean turn;
+            if(i%2==0) turn = true;
+            else turn =false;
+            int[] move = myBoard.getGoodMove(turn); //move for black
+            myBoard.placeTile(turn, move[0], move[1]);
+            System.out.println(myBoard.nicerToString());
+        }
+
     }
 
 
