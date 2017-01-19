@@ -112,10 +112,12 @@ public class BoardView extends View {
 
     private void playerTurn(int x, int y){
         comp = false;
-        b.placeTile(true, y, x);
+        boolean valid = b.placeTile(true, y, x);
         //Log.d("player move", x+", "+y);
-        postInvalidate();
-        computerTurn();
+        if(valid) {
+            postInvalidate();
+            computerTurn();
+        }
     }
 
     private void computerTurn(){

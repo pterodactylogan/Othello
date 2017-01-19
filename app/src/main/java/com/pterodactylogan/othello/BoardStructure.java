@@ -62,11 +62,19 @@ public class BoardStructure {
      * @param r
      * @param c
      */
-    public void placeTile(boolean color, int r, int c){
-        if(board[r][c]!= OthelloCell.EMPTY) return;
-        if(color) board[r][c] = OthelloCell.WHITE;
-        else board[r][c] = OthelloCell.BLACK;
-        flipTiles(color,r,c);
+    public boolean placeTile(boolean color, int r, int c){
+        if(board[r][c]!= OthelloCell.EMPTY) return false;
+        if(color) {
+            boolean flipped = flipTiles(color, r, c);
+            if(!flipped) return false;
+            board[r][c] = OthelloCell.WHITE;
+        }
+        else {
+            boolean flipped = flipTiles(color, r, c);
+            if(!flipped) return false;
+            board[r][c] = OthelloCell.BLACK;
+        }
+        return true;
     }
 
     public ArrayList<int[]> getFlips(boolean color, int r, int c){
@@ -313,13 +321,15 @@ public class BoardStructure {
      * @param c
      *
      */
-    public void flipTiles(boolean color, int r, int c){
+    public boolean flipTiles(boolean color, int r, int c){
         ArrayList<int[]> tiles = getFlips(color, r, c);
+        if(tiles.size()==0) return false;
         for(int i=0; i<tiles.size(); i++){
             int[] coords = tiles.get(i);
             if(color) board[coords[0]][coords[1]] = OthelloCell.WHITE;
             else board[coords[0]][coords[1]] = OthelloCell.BLACK;
         }
+        return true;
     }
 
     public String nicerToString(){
