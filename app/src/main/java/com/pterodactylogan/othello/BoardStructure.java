@@ -105,7 +105,7 @@ public class BoardStructure {
                 }
                 if(isWhite(r-i-1, c+i+1)){
                     for(int j=i; j>0; j--){
-                        int[] point = {r-j, c+i};
+                        int[] point = {r-j, c+j};
                         tiles.add(point);
                     }
                 }
@@ -219,7 +219,7 @@ public class BoardStructure {
                 }
                 if(isBlack(r-i-1, c+i+1)){
                     for(int j=i; j>0; j--){
-                        int[] point = {r-j, c+1};
+                        int[] point = {r-j, c+j};
                         tiles.add(point);
                     }
                 }
@@ -411,13 +411,17 @@ public class BoardStructure {
         return board[r][c] == OthelloCell.WHITE;
     }
 
-//    public boolean isStuck(boolean color){
-//        //check all cells
-//        for(int i=0; i<BoardSize; i++){
-//            for(int j=0; j<BoardSize; j++){
-//                if(board[i][j])
-//            }
-//        }
-//    }
+    public boolean isStuck(boolean color){
+        //check all cells
+        for(int i=0; i<BoardSize; i++){
+            for(int j=0; j<BoardSize; j++){
+                if(board[i][j] ==OthelloCell.EMPTY){
+                    ArrayList<int[]> flips = getFlips(color, i, j);
+                    if(flips.size()!=0) return false;
+                }
+            }
+        }
+        return false;
+    }
 
 }

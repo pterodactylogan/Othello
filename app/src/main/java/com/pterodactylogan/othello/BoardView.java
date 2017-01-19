@@ -25,11 +25,14 @@ public class BoardView extends View {
     BoardStructure b = new BoardStructure(8);
     private BoardStructure mGame = new BoardStructure(8);
 
-    public interface CellTouchListener {
-        void onCellTouched(int x, int y);
+    public interface GameStatusListener {
+        void updateText(String text);
     }
-    private CellTouchListener mTouchListener;
+    private GameStatusListener mStatus;
 
+    public void setStatusListener(GameStatusListener listener){
+        mStatus= listener;
+    }
 
     public BoardView(Context context) {
         super(context);
@@ -96,14 +99,7 @@ public class BoardView extends View {
             }
         }
     }
-    public void setCellTouchListener(CellTouchListener listener) {
-        mTouchListener = listener;
-    }
 
-
-    public void clearCellTouchListener(CellTouchListener listener) {
-        mTouchListener = null;
-    }
 
     public void updateGame(BoardStructure game) {
         mGame = game;
@@ -116,6 +112,12 @@ public class BoardView extends View {
 
     private void playerTurn(int x, int y){
         comp = false;
+        if(b.isStuck(true)){
+            mStatus.updateText("you have no moves; it is the computer's turn");
+            postInvalidate();
+            computerTurn();
+            return;
+        }
         boolean valid = b.placeTile(true, y, x);
         //Log.d("player move", x+", "+y);
         if(valid) {
@@ -132,8 +134,7 @@ public class BoardView extends View {
             comp=true;
             int [] move = b.getGoodMove(false);
             if(move==null){
-                TextView status = (TextView) findViewById(R.id.status);
-                status.setText("computer has no moves; it is your turn");
+                mStatus.updateText("computer has no moves; it is your turn");
             }else {
                 b.placeTile(false, move[0], move[1]);
             }
@@ -160,7 +161,7 @@ public class BoardView extends View {
         setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                Log.d("wow", "touch event!");
+                //Log.d("wow", "touch event!");
                 if (motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
                     //Log.d("event", "down");
                     return true;
@@ -168,7 +169,7 @@ public class BoardView extends View {
                     int cellSize = getWidth() / 8;
                     int x = (int) (motionEvent.getX() / cellSize);
                     int y = (int) (motionEvent.getY() / cellSize);
-                    Log.d("coords", x +"  "+y);
+                    //Log.d("coords", x +"  "+y);
                     if(!comp) playerTurn(x,y);
                     return true;
                 }

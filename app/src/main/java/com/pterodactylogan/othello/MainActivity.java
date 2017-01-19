@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,6 +15,15 @@ public class MainActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        BoardView board = (BoardView) findViewById(R.id.board_view);
+        board.setStatusListener(new BoardView.GameStatusListener() {
+            @Override
+            public void updateText(String text) {
+                TextView status = (TextView) findViewById(R.id.status);
+                status.setText(text);
+            }
+        });
     }
 
     public void reset(View v){
@@ -24,5 +34,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("reset");
 
     }
+
+
 
 }
