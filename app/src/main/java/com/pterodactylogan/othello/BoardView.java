@@ -101,6 +101,7 @@ public class BoardView extends View {
     }
 
     public void resetGame() {
+        mStatus.updateText("");
         b = new BoardStructure(8);
         mGame = new BoardStructure(8);
         comp = false;
@@ -119,6 +120,23 @@ public class BoardView extends View {
     }
 
     private void playerTurn(int x, int y){
+        comp = false;
+        if(b.isStuck(true)){
+            mStatus.updateText("you have no moves; it is the computer's turn");
+            postInvalidate();
+            computerTurn();
+            return;
+        }
+        boolean valid = b.placeTile(true, y, x);
+        //Log.d("player move", x+", "+y);
+        if(!valid){
+            mStatus.updateText("invalid move");
+        }
+        if(valid) {
+            mStatus.updateText("");
+            postInvalidate();
+            computerTurn();
+        }
         int[] winner = b.evalWin();
         if(winner[0]!=0){
             comp = true;
@@ -130,19 +148,6 @@ public class BoardView extends View {
                 mStatus.updateText("It was a tie! Score: "+winner[1]+" to "+winner[2]);
             }
             return;
-        }
-        comp = false;
-        if(b.isStuck(true)){
-            mStatus.updateText("you have no moves; it is the computer's turn");
-            postInvalidate();
-            computerTurn();
-            return;
-        }
-        boolean valid = b.placeTile(true, y, x);
-        //Log.d("player move", x+", "+y);
-        if(valid) {
-            postInvalidate();
-            computerTurn();
         }
     }
 
@@ -160,24 +165,25 @@ public class BoardView extends View {
             }
             postInvalidate();
             comp=false;
+            int[] winner = b.evalWin();
+            if(winner[0]!=0){
+                comp = true;
+                if(winner[0]==1){
+                    mStatus.updateText("You won! Score: "+ winner[1]+" to " +winner[2]);
+                }else if(winner[0]==2){
+                    mStatus.updateText("You lost :( Score: "+winner[1]+" to "+winner[2]);
+                }else{
+                    mStatus.updateText("It was a tie! Score: "+winner[1]+" to "+winner[2]);
+                }
+                return;
+            }
         }
+
     };
 
 
     private void computerTurn(){
-        int[] winner = b.evalWin();
-        if(winner[0]!=0){
-            comp = true;
-            if(winner[0]==1){
-                mStatus.updateText("You won! Score: "+ winner[1]+" to " +winner[2]);
-            }else if(winner[0]==2){
-                mStatus.updateText("You lost :( Score: "+winner[1]+" to "+winner[2]);
-            }else{
-                mStatus.updateText("It was a tie! Score: "+winner[1]+" to "+winner[2]);
-            }
-            return;
-        }
-        handler.postDelayed(compTurn, 500);
+        handler.postDelayed(compTurn, 1000);
     }
 
     private void init(){

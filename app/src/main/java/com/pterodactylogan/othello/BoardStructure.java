@@ -421,7 +421,7 @@ public class BoardStructure {
                 }
             }
         }
-        return false;
+        return true;
     }
 
     //{winner, winning score, losing score}

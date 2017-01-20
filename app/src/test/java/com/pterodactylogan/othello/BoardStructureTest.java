@@ -75,7 +75,20 @@ public class BoardStructureTest {
 
     }
 
-
+    @Test
+    public void testIsStuck(){
+        BoardStructure myBoard = new BoardStructure(8);
+        myBoard.placeTile(false,3, 2);
+        myBoard.placeTile(false, 4, 5);
+        boolean stuck = myBoard.isStuck(true);
+        assertTrue(stuck);
+        myBoard.placeTile(true,0,0);
+        stuck = myBoard.isStuck(true);
+        assertTrue(stuck);
+        myBoard.placeTile(true, 2,3);
+        stuck=myBoard.isStuck(true);
+        assertTrue(stuck);
+    }
 
 
 }
