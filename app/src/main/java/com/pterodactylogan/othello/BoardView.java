@@ -100,6 +100,14 @@ public class BoardView extends View {
         }
     }
 
+    public void resetGame() {
+        b = new BoardStructure(8);
+        mGame = new BoardStructure(8);
+        comp = false;
+        postInvalidate();
+    }
+
+
 
     public void updateGame(BoardStructure game) {
         mGame = game;
@@ -154,6 +162,7 @@ public class BoardView extends View {
             comp=false;
         }
     };
+
 
     private void computerTurn(){
         int[] winner = b.evalWin();

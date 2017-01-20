@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,17 +25,24 @@ public class MainActivity extends AppCompatActivity {
                 status.setText(text);
             }
         });
+
+        final  BoardView myBoard = (BoardView) findViewById(R.id.board_view);
+        Button resetButton = (Button) findViewById(R.id.reset);
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                reset(myBoard);
+            }
+        });
+
+
     }
 
-    public void reset(View v){
-        Intent i = getBaseContext().getPackageManager()
-                .getLaunchIntentForPackage( getBaseContext().getPackageName() );
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(i);
-        System.out.println("reset");
 
+
+    public void reset(BoardView v){
+        v.resetGame();
     }
-
 
 
 }
