@@ -424,4 +424,43 @@ public class BoardStructure {
         return false;
     }
 
+    //{winner, winning score, losing score}
+    //0 for no winner, 1 for player wins, 2 for computer wins, 3 for a tie
+    public int[] evalWin(){
+        int[] result = {0,0,0};
+        int blackTiles = 0;
+        int whiteTiles = 0;
+
+        //check all cells
+        for(int i=0; i<BoardSize; i++){
+            for(int j=0; j<BoardSize; j++){
+                if(board[i][j]==OthelloCell.EMPTY) return result; //if any cells are empty, no winner
+                else if(board[i][j]==OthelloCell.BLACK) blackTiles++;
+                else whiteTiles++;
+            }
+        }
+        //if no cells are empty, evaluate who won
+        int winner;
+        int wscore;
+        int lscore;
+        if(blackTiles>whiteTiles) {
+            winner = 2;
+            wscore = blackTiles;
+            lscore = whiteTiles;
+        }
+        else if(whiteTiles>blackTiles) {
+            winner=1;
+            wscore = whiteTiles;
+            lscore = blackTiles;
+        }else{
+            winner = 3;
+            wscore=blackTiles;
+            lscore=whiteTiles;
+        }
+        result[0]=winner;
+        result[1]=wscore;
+        result[2]=lscore;
+        return result;
+    }
+
 }

@@ -111,6 +111,18 @@ public class BoardView extends View {
     }
 
     private void playerTurn(int x, int y){
+        int[] winner = b.evalWin();
+        if(winner[0]!=0){
+            comp = true;
+            if(winner[0]==1){
+                mStatus.updateText("You won! Score: "+ winner[1]+" to " +winner[2]);
+            }else if(winner[0]==2){
+                mStatus.updateText("You lost :( Score: "+winner[1]+" to "+winner[2]);
+            }else{
+                mStatus.updateText("It was a tie! Score: "+winner[1]+" to "+winner[2]);
+            }
+            return;
+        }
         comp = false;
         if(b.isStuck(true)){
             mStatus.updateText("you have no moves; it is the computer's turn");
@@ -144,6 +156,18 @@ public class BoardView extends View {
     };
 
     private void computerTurn(){
+        int[] winner = b.evalWin();
+        if(winner[0]!=0){
+            comp = true;
+            if(winner[0]==1){
+                mStatus.updateText("You won! Score: "+ winner[1]+" to " +winner[2]);
+            }else if(winner[0]==2){
+                mStatus.updateText("You lost :( Score: "+winner[1]+" to "+winner[2]);
+            }else{
+                mStatus.updateText("It was a tie! Score: "+winner[1]+" to "+winner[2]);
+            }
+            return;
+        }
         handler.postDelayed(compTurn, 500);
     }
 
