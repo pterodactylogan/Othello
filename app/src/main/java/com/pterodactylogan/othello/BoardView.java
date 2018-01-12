@@ -20,6 +20,7 @@ import android.widget.TextView;
 public class BoardView extends View {
 
     boolean comp = false;
+    boolean stall=false;
 
     private Paint mBackgroundPaint;
     BoardStructure b = new BoardStructure(8);
@@ -122,11 +123,16 @@ public class BoardView extends View {
     private void playerTurn(int x, int y){
         comp = false;
         if(b.isStuck(true)){
+            if(stall){
+                int[] winner =b.evalWin();
+                mStatus.updateText("both players have no moves. Score: "+winner[1]+" to "+winner[2]);
+            }
             mStatus.updateText("you have no moves; it is the computer's turn");
+            stall=true;
             postInvalidate();
             computerTurn();
             return;
-        }
+        } else stall = false;
         boolean valid = b.placeTile(true, y, x);
         //Log.d("player move", x+", "+y);
         if(!valid){
@@ -159,9 +165,15 @@ public class BoardView extends View {
             comp=true;
             int [] move = b.getGoodMove(false);
             if(move==null){
+                if(stall){
+                    int[] winner =b.evalWin();
+                    mStatus.updateText("both players have no moves. Score: "+winner[1]+" to "+winner[2]);
+                }
                 mStatus.updateText("computer has no moves; it is your turn");
+                stall=true;
             }else {
                 b.placeTile(false, move[0], move[1]);
+                stall=false;
             }
             postInvalidate();
             comp=false;
@@ -183,6 +195,7 @@ public class BoardView extends View {
 
 
     private void computerTurn(){
+        comp=true;
         handler.postDelayed(compTurn, 1000);
     }
 
